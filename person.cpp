@@ -67,4 +67,5 @@ string Person::person_info()
 {
     return "Name: " + name_ +
            "\nPhone: " + phone_;
+           person_address_.address_info();
 }
