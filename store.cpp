@@ -145,14 +145,15 @@ bool Store::make_purchase(Person customer, product item, int amount)
     new_transaction.purchased_item = item;
     new_transaction.quantity = amount;
 
-    if (!add_transaction(new_transaction))
+    if (!update_customer(index, updated_customer))
         return false;
 
-    if (!update_customer(index, updated_customer))
+    if (!add_transaction(new_transaction))
         return false;
 
     return true;
 }
+
 
 //same as find customer 
 string Store::customer_info()
