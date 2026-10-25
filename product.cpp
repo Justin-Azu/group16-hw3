@@ -4,6 +4,6 @@
 using std::string;
 
 string product::product_info(){
-    return "name: " + name + "\n" + "Description: " + description +
+    return string("Product:\n name: ") + name + "\n" + "Description: " + description +
     "Price: " + "\n" + std::to_string(price);
 }
