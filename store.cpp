@@ -158,7 +158,7 @@ bool Store::make_purchase(Person customer, product item, int amount)
 //same as find customer 
 string Store::customer_info()
 {
-    string result = "Customer Information:\n";
+    string result = "Customers:\n";
 
     for (int i = 0; i < num_customers_; i++)
         result += customers_[i].person_info() + "\n";
@@ -169,7 +169,7 @@ string Store::customer_info()
 
 string Store::product_info()
 {
-    string result = "Product Information:\n";
+    string result = "Products:\n";
 
     for (int i = 0; i < num_products_; i++)
         result += products_[i].product_info() + "\n";
@@ -180,7 +180,7 @@ string Store::product_info()
 
 string Store::transaction_info()
 {
-    string result = "Transaction Information:\n";
+    string result = "All Transactions:\n";
 
     for (int i = 0; i < num_transactions_; i++)
         result += transactions_[i].transaction_info() + "\n";

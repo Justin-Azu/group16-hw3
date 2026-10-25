@@ -18,159 +18,166 @@ using std::getline;
 
 int main()
 {
-srand(time(0));
-	//import from text files
-	ifstream customer_file("people.txt");
+    srand(time(0));
 
-	if (!customer_file)
-	{
-		cout << "Error opening people.txt" << endl;
-		return 1;
-	}
+    //import from text files
+    ifstream customer_file("people.txt");
 
-	int customer_count;
-	Store store1;
-	Person customers[100];
+    if (!customer_file)
+    {
+        cout << "Error opening people.txt" << endl;
+        return 1;
+    }
 
-	customer_file >> customer_count;
-	customer_file.ignore(10000, '\n');
+    int customer_count;
+    Store store1;
+    Person customers[100];
 
-	//add to store and other variables
+    customer_file >> customer_count;
+    customer_file.ignore(10000, '\n');
 
-	if (customer_count > 100)
-		customer_count = 100;
+    //add to store and other variables
 
-	for (int i = 0; i < customer_count; i++)
-	{
-		string name, phone;
-		address customer_address;
-		credit_card card;
+    if (customer_count > 100)
+        customer_count = 100;
 
-		getline(customer_file, name);
-		getline(customer_file, phone);
-		getline(customer_file, customer_address.address_line1);
-		getline(customer_file, customer_address.address_line2);
-		getline(customer_file, customer_address.city);
-		getline(customer_file, customer_address.state);
-		getline(customer_file, customer_address.zip);
+    for (int i = 0; i < customer_count; i++)
+    {
+        string name, phone;
+        address customer_address;
+        credit_card card;
 
-		Person customer(name, phone, customer_address, card);
-		customers[i] = customer;
-		store1.add_customer(customer);
-	}
+        getline(customer_file, name);
+        getline(customer_file, phone);
+        getline(customer_file, customer_address.address_line1);
+        getline(customer_file, customer_address.address_line2);
+        getline(customer_file, customer_address.city);
+        getline(customer_file, customer_address.state);
+        getline(customer_file, customer_address.zip);
 
-	customer_file.close();
+        Person customer(name, phone, customer_address, card);
+        customers[i] = customer;
+        store1.add_customer(customer);
+    }
 
-	ifstream card_file("credit_card.txt");
+    customer_file.close();
 
-	if (!card_file)
-	{
-		cout << "Error opening credit_card.txt" << endl;
-		return 1;
-	}
+    ifstream card_file("credit_card.txt");
 
-	int card_count;
-	card_file >> card_count;
-	card_file.ignore(10000, '\n');
+    if (!card_file)
+    {
+        cout << "Error opening credit_card.txt" << endl;
+        return 1;
+    }
 
-	for (int i = 0; i < card_count; i++)
-	{
-		string card_name;
-		credit_card card;
+    int card_count;
+    card_file >> card_count;
+    card_file.ignore(10000, '\n');
 
-		getline(card_file, card_name);
-		card_file >> card.cc_number;
-		card_file >> card.limit;
-		card_file >> card.current_balance;
-		card_file.ignore(10000, '\n');
+    for (int i = 0; i < card_count; i++)
+    {
+        string card_name;
+        credit_card card;
 
-		for (int j = 0; j < customer_count; j++)
-		{
-			if (customers[j].name() == card_name)
-			{
-				customers[j].person_credit_card(card);
-				store1.update_customer(j, customers[j]);
-				break;
-			}
-		}
-	}
+        getline(card_file, card_name);
+        card_file >> card.cc_number;
+        card_file >> card.limit;
+        card_file >> card.current_balance;
+        card_file.ignore(10000, '\n');
 
-	card_file.close();
+        for (int j = 0; j < customer_count; j++)
+        {
+            if (customers[j].name() == card_name)
+            {
+                customers[j].person_credit_card(card);
+                store1.update_customer(j, customers[j]);
+                break;
+            }
+        }
+    }
 
-	ifstream product_file("products.txt");
+    card_file.close();
 
-	if (!product_file)
-	{
-		cout << "Error opening products.txt" << endl;
-		return 1;
-	}
+    ifstream product_file("products.txt");
 
-	int product_count;
-	product_file >> product_count;
-	product_file.ignore(10000, '\n');
+    if (!product_file)
+    {
+        cout << "Error opening products.txt" << endl;
+        return 1;
+    }
 
-	if (product_count > 100)
-		product_count = 100;
+    int product_count;
+    product_file >> product_count;
+    product_file.ignore(10000, '\n');
 
-	for (int i = 0; i < product_count; i++)
-	{
-		product item;
+    if (product_count > 100)
+        product_count = 100;
 
-		getline(product_file, item.name);
-		getline(product_file, item.description);
-		product_file >> item.price;
-		product_file.ignore(10000, '\n');
+    for (int i = 0; i < product_count; i++)
+    {
+        product item;
 
-		store1.add_product(item);
-	}
+        getline(product_file, item.name);
+        getline(product_file, item.description);
+        product_file >> item.price;
+        product_file.ignore(10000, '\n');
 
-	product_file.close();
+        store1.add_product(item);
+    }
 
-	//print store info after you finish importing info
-	//from text files and add them to your store
-	cout << "Store info: " << endl << endl;
-	cout << store1.store_info() << endl << endl;
+    product_file.close();
 
-	//make random number of random transactions
-	int transaction_count = 11 + rand() % 89;
+    //print store info after you finish importing info
+    //from text files and add them to your store
+    cout << "Store info: " << endl << endl;
+    cout << store1.store_info() << endl << endl;
 
-	cout << "Attempting " << transaction_count << " transactions." << endl;
+    //make random number of random transactions
+    int transaction_count = 11 + rand() % 89;
 
-	for (int i = 0; i < transaction_count; i++)
-	{
-		if (store1.num_customers() == 0 ||
-			store1.num_products() == 0 ||
-			store1.num_transactions() >= 100)
-		{
-			break;
-		}
+    cout << "Attempting " << transaction_count << " transactions." << endl;
 
-		int customer_index = rand() % customer_count;
-		int product_index = rand() % store1.num_products();
-		int quantity = 1 + rand() % 3;
+    for (int i = 0; i < transaction_count; i++)
+    {
+        if (store1.num_customers() == 0 ||
+            store1.num_products() == 0 ||
+            store1.num_transactions() >= 100)
+        {
+            break;
+        }
 
-		Person customer = customers[customer_index];
-		product item = store1.get_product(product_index);
+        int customer_index = rand() % customer_count;
+        int product_index = rand() % store1.num_products();
+        int quantity = 1 + rand() % 3;
 
-		cout << "Attempting purchase: " << customer.name()
-			<< " purchasing " << quantity << " x "
-			<< item.name << endl;
+        Person customer = customers[customer_index];
+        product item = store1.get_product(product_index);
 
-		if (store1.make_purchase(customer, item, quantity))
-		{
-			cout << "Purchase successful!" << endl;
-			cout << store1.transaction_info() << endl;
-		}
-		else
-		{
-			cout << "Purchase failed. Insufficient credit or invalid purchase."
-				<< endl;
-		}
-	}
+        cout << item.product_info();
+        cout << "Quantity: " << quantity << endl;
 
-	//print store info at the end
-	cout << "Store info: " << endl << endl;
-	cout << store1.store_info() << endl << endl;
+        if (store1.make_purchase(customer, item, quantity))
+        {
+            cout << "Successful transaction!" << endl;
+            cout << store1.get_transaction(
+                store1.num_transactions() - 1
+            ).transaction_info() << endl;
+        }
+        else
+        {
+            cout << "Unsuccessful transaction!" << endl;
+            cout << "Transaction Details:\n";
+            cout << "Person:\n";
+            cout << customer.person_info();
+            cout << "Product:\n";
+            cout << item.product_info();
+            cout << "Purchase Quantity: " << quantity << endl;
+        }
+    }
 
-	return 0;
+    //print store info at the end
+    cout << "Store info: " << endl << endl;
+    cout << store1.store_info() << endl << endl;
+
+    return 0;
 }
